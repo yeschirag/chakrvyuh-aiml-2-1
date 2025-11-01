@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chakravyuh Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Apply custom fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* CHANGED: More red/crimson in the main background gradient */
+            background: linear-gradient(135deg, #1A0000 0%, #3D0000 25%, #5E0000 50%, #3D0000 75%, #1A0000 100%);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        .font-mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Multiverse Background Effect --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: 
+                /* CHANGED: Pink-500 rgba(236, 72, 153) and Red-500 rgba(239, 68, 68) for glow */
+                radial-gradient(ellipse at 20% 30%, rgba(236, 72, 153, 0.2), transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(239, 68, 68, 0.2), transparent 50%), 
+                /* Kept a subtle blue for contrast if desired, or change to another red/orange */
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.1), transparent 60%); 
+            pointer-events: none;
+            z-index: 0;
+            animation: aurora 20s ease-in-out infinite;
+        }
+        
+        @keyframes aurora {
+            0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+            33% { opacity: 1; transform: scale(1.1) rotate(5deg); }
+            66% { opacity: 0.9; transform: scale(1.05) rotate(-5deg); }
+        }
+
+        /* --- Animations & Effects --- */
+
+        /* Simple blink animation for input cursor */
+        .blink-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { color: transparent; }
+            50% { color: #f472b6; }
+        }
+
+        /* Cool pulse effect for the border (Updated to vibrant multiverse colors) */
+        .animate-pulse-border {
+            animation: pulse-border 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { 
+                border-color: #ec4899; /* pink-500 */
+                box-shadow: 0 0 30px 8px rgba(236, 72, 153, 0.4), 
+                            0 0 60px 15px rgba(220, 38, 38, 0.2), /* red (220, 38, 38) */
+                            inset 0 0 20px 3px rgba(236, 72, 153, 0.15); 
+            }
+            50% { 
+                border-color: #dc2626; /* red-600 */
+                box-shadow: 0 0 40px 12px rgba(220, 38, 38, 0.5), 
+                            0 0 80px 20px rgba(236, 72, 153, 0.3),
+                            inset 0 0 30px 5px rgba(220, 38, 38, 0.2); 
+            }
+        }
+
+        /* Pulse effect for the button */
+        .animate-pulse-button {
+            animation: pulse-button 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-button {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.95; transform: scale(1.02); }
+        }
+
+        /* Scanline Overlay */
+        .scanline-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 18, 18, 0) 50%,
+                rgba(0, 0, 0, 0.2) 70%,
+                rgba(18, 18, 18, 0.1) 100%
+            );
+            background-size: 100% 3px;
+            animation: scanline 5s linear infinite;
+            z-index: 10;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        /* Typing cursor for riddle */
+        #riddle-pre:not(.typing-done)::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+            color: #67e8f9;
+            margin-left: 2px;
+            font-weight: bold;
+        }
+
+        /* Enhanced focus/hover glows */
+        input:focus {
+            box-shadow: 0 0 15px 5px rgba(236, 72, 153, 0.3);
+        }
+        button:hover, button:focus {
+            box-shadow: 0 0 20px 7px rgba(236, 72, 153, 0.4);
+        }
+        
+        /* Terminal flicker effect */
+        .animate-flicker {
+            animation: flicker 4s linear infinite;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.9; }
+        }
+
+        /* Success animation */
+        .animate-success-show {
+            animation: success-show 0.5s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        @keyframes success-show {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        .animate-shake {
+            animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+        }
+    </style>
+</head>
+<body class="h-full text-gray-300 flex items-center justify-center p-4 overflow-hidden">
+
+    <div class="w-full max-w-2xl bg-gradient-to-br from-gray-900/95 via-red-900/20 to-gray-900/95 backdrop-blur-xl border-2 border-pink-500 rounded-lg p-6 md:p-8 animate-pulse-border animate-flicker relative shadow-2xl">
+        <div class="scanline-overlay"></div>
+        
+        <div class="flex justify-between items-center pb-4 border-b border-rose-500/30 mb-6">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-cyan-400 bg-clip-text text-transparent font-mono">CHAKRAVYUH</h1>
+            <div class="text-xs text-rose-300/70 font-mono">GDG IIIT SRI CITY - AI/ML CHALLENGE</div>
+        </div>
+
+        <div id="riddle-area" class="mb-6">
+            <label class="font-mono text-cyan-400">INCOMING TRANSMISSION...</label>
+            <pre id="riddle-pre" class="font-mono text-lg text-gray-300 whitespace-pre-wrap mt-2 p-4 bg-gray-900/50 rounded-md border border-gray-700"></pre>
+        </div>
+
+        <form id="riddle-form">
+            <label id="input-label" for="answer-input" class="text-sm font-mono text-cyan-400 transition-opacity duration-500" style="opacity: 0;">
+                SUBMIT KEY (ALL CAPS):
+                <span class="blink-cursor">_</span>
+            </label>
+            <div class="flex gap-3 mt-2">
+                <input type="text" id="answer-input" name="answer" class="font-mono flex-grow bg-gray-800 border border-gray-700 text-white placeholder-gray-400 rounded-md px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all" placeholder="AWAITING INPUT..." disabled>
+                <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold font-mono px-6 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 focus:ring-offset-gray-900 animate-pulse-button disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    DECRYPT
+                </button>
+            </div>
+        </form>
+
+        <div id="message-area" class="mt-6 font-mono text-lg text-center h-6"></div>
+
+        <div id="success-area" class="hidden mt-6 p-4 bg-green-900/50 border-2 border-green-500 rounded-lg">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold font-mono text-green-400">ACCESS GRANTED</h3>
+                <p class="text-lg text-gray-200 mt-2">Timeline anomaly secured. Reward processed.</p>
+                <a id="secret-link-href" href="#" target="_blank" class="inline-block bg-green-600 hover:bg-green-500 text-white font-bold font-mono px-6 py-3 rounded-md mt-4 transition-all duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-900">
+                    VIEW REWARD
+                </a>
+            </div>
+
+            <hr class="border-gray-600 my-6">
+            <form id="challenge-2-form">
+                <label for="passkey-input" class="text-sm font-mono text-rose-400">
+                    CHALLENGE 2: ENTER PASSKEY
+                    <span class="blink-cursor">_</span>
+                </label>
+                <div class="flex gap-3 mt-2">
+                    <input type="password" id="passkey-input" name="passkey" class="font-mono flex-grow bg-gray-800 border border-gray-700 text-white placeholder-gray-400 rounded-md px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all" placeholder="ENTER PASSKEY...">
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold font-mono px-6 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        SUBMIT
+                    </button>
+                </div>
+            </form>
+
+            <div id="challenge-2-message" class="mt-4 font-mono text-lg text-center h-6"></div>
+            
+            <div class="text-center">
+                <a id="final-link" href="https://youtube.com" target="_blank" class="hidden animate-success-show inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold font-mono px-6 py-3 rounded-md mt-4 transition-all duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900">
+                    ACCESS FINAL ARCHIVE
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Configuration ---
+            const riddle_text = `
+    Behold,
+    two branches, born of one design. My sacred twin, a perfect, mirrored line.
+    We are identical, in byte and in verse, ...until the nexus where we two diverge.
+    
+    Find this tiny fracture, this variant's sin;
+    The true name of the orchestrator lies within.
+    `;
+            // ---------------------
+
+            // --- Element References ---
+            const riddleForm = document.getElementById('riddle-form');
+            const answerInput = document.getElementById('answer-input');
+            const messageArea = document.getElementById('message-area');
+            const successArea = document.getElementById('success-area');
+            const riddleElement = document.getElementById('riddle-pre');
+            const inputLabel = document.getElementById('input-label');
+            const riddleArea = document.getElementById('riddle-area');
+            const challenge2Form = document.getElementById('challenge-2-form');
+            const passkeyInput = document.getElementById('passkey-input');
+            const challenge2Message = document.getElementById('challenge-2-message');
+            const finalLink = document.getElementById('final-link');
+            const secretLink = document.getElementById('secret-link-href');
+
+            // --- Utility: Typewriter Effect (Unchanged) ---
+            function typeRiddle(element, text, speed) {
+                let i = 0;
+                element.innerHTML = '';
+
+                function typeChar() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(typeChar, speed);
+                    } else {
+                        element.classList.add('typing-done');
+                        inputLabel.style.opacity = '1';
+                        answerInput.disabled = false;
+                        riddleForm.querySelector('button').disabled = false;
+                        answerInput.placeholder = "ENTER KEY...";
+                    }
+                }
+                typeChar();
+            }
+
+            // Start the riddle typing effect
+            typeRiddle(riddleElement, riddle_text.trim(), 25);
+
+            
+            // --- Event Listener: Riddle Form (Challenge 1) ---
+            riddleForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const guess = answerInput.value;
+                const button = riddleForm.querySelector('button');
+
+                // Disable form while checking
+                answerInput.disabled = true;
+                button.disabled = true;
+                messageArea.textContent = "Checking transmission...";
+                messageArea.classList.remove('text-red-500', 'text-green-500');
+
+                try {
+                    const response = await fetch('/check_answer', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ challenge: 1, guess: guess })
+                    });
+                    const data = await response.json();
+
+                    if (data.correct) {
+                        messageArea.textContent = "Processing reward...";
+                        messageArea.classList.add('text-green-500');
+
+                        // Set the link provided by the server
+                        secretLink.href = data.secret_link;
+
+                        setTimeout(() => {
+                            riddleForm.classList.add('hidden');
+                            riddleArea.classList.add('hidden');
+                            messageArea.textContent = "Decryption complete. Enter password to access next challenge.";
+                            successArea.classList.remove('hidden'); 
+                            successArea.classList.add('animate-success-show');
+                            passkeyInput.focus();
+                        }, 1000);
+
+                    } else {
+                        handleIncorrect(riddleForm, messageArea, data.message);
+                        answerInput.value = "";
+                        // Re-enable form on failure
+                        answerInput.disabled = false;
+                        button.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    handleIncorrect(riddleForm, messageArea, "Server connection error. Please try again.");
+                    answerInput.disabled = false;
+                    button.disabled = false;
+                }
+            });
+
+            // --- Event Listener: Passkey Form (Challenge 2) ---
+            challenge2Form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const guess = passkeyInput.value;
+                const button = challenge2Form.querySelector('button');
+
+                // Disable form
+                passkeyInput.disabled = true;
+                button.disabled = true;
+                challenge2Message.textContent = "Verifying passkey...";
+                challenge2Message.classList.remove('text-red-500');
+
+                try {
+                    const response = await fetch('/check_answer', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ challenge: 2, guess: guess })
+                    });
+                    const data = await response.json();
+
+                    if (data.correct) {
+                        challenge2Message.textContent = "PASSKEY ACCEPTED. FINAL ARCHIVE UNLOCKED.";
+                        challenge2Message.classList.add('text-green-500');
+                        
+                        // Set the final link from the server
+                        finalLink.href = data.final_link;
+                        
+                        challenge2Form.classList.add('hidden');
+                        finalLink.classList.remove('hidden');
+
+                    } else {
+                        handleIncorrect(challenge2Form, challenge2Message, data.message);
+                        passkeyInput.value = "";
+                        // Re-enable form on failure
+                        passkeyInput.disabled = false;
+                        button.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    handleIncorrect(challenge2Form, challenge2Message, "Server connection error.");
+                    passkeyInput.disabled = false;
+                    button.disabled = false;
+                }
+            });
+
+            // --- Utility: Handle Incorrect Answer (Unchanged) ---
+            function handleIncorrect(formElement, messageElement, messageText) {
+                messageElement.textContent = messageText;
+                messageElement.classList.add('text-red-500');
+                
+                formElement.classList.add('animate-shake');
+                
+                setTimeout(() => {
+                    formElement.classList.remove('animate-shake');
+                }, 600);
+            }
+        });
+    </script>
+</body>
+</html>
