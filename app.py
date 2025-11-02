@@ -12,7 +12,7 @@ CORRECT_ANSWERS = {
 
 REWARD_LINKS = {
     "1": "https://drive.google.com/file/d/1o6uDWIs9gcR26Ybi_m4EmZSgetMggNA0/view?usp=drive_link",
-    "2": "https://chakrvyuh-aiml-d2-c4.vercel.app/" # The final link
+    "2": "https://chakrvyuh-aiml-2-2-production.up.railway.app/" # The final link
 }
 # -----------------------------
 
